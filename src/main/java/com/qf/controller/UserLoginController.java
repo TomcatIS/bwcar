@@ -1,11 +1,11 @@
 package com.qf.controller;
 
 import com.google.code.kaptcha.impl.DefaultKaptcha;
+import com.qf.dto.UserDTO;
+import com.qf.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.bind.annotation.*;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +14,7 @@ import java.io.IOException;
 
 /**
  * description:
+ * 用户登录
  * 生成验证码
  * */
 @Controller
@@ -21,10 +22,10 @@ public class UserLoginController {
     @Autowired
     private DefaultKaptcha defaultKaptcha;
 
+    @ResponseBody
     @RequestMapping("/sys/login")
-    public ModelAndView login(ModelAndView modelAndView){
-        modelAndView.setViewName("login");
-        return modelAndView;
+    public R login(@RequestBody UserDTO userDTO){
+        return R.ok();
     }
 
     /**

@@ -81,7 +81,6 @@ Vue.component('login-title', {
             </div>
                `
 });
-
 var vm = new Vue({
     el: '#rrapp',
     data: {
@@ -99,30 +98,27 @@ var vm = new Vue({
         refreshCode: function(){
             this.src = "captcha.jpg?t="+$.now();
         },
-        login: function(){
+        login: function(event){
             $.ajax({
-                method: 'POST',
+                type: 'POST',
                 data: JSON.stringify(this.user),
                 url: '/sys/login',
-                datatype: 'json',
+                dataType: 'json',
                 contentType: 'application/json',
                 cache: false,
                 success: function(result){
-
+                    if (result.code == 200){
+                        window.location.href="/index.html";
+                    }else{
+                        this.error = true;
+                        this.errorMsg = result.msg;
+                        this.refreshCode();
+                    }
                 }
-
             });
         }
     }
 });
-
-
-
-
-
-
-
-
 /*var vm = new Vue({
 	el:'#rrapp',
 	data:{
@@ -141,16 +137,15 @@ var vm = new Vue({
             this.src = "captcha.jpg?t=" + $.now();
 		},
 		login: function (event) {
-
 		    $.ajax({
                 type: "POST",
-                url: "sys/login",
+                url: "/sys/login",
                 data: JSON.stringify(vm.user),
                 dataType: "json",
                 contentType: "application/json",
                 cache: false,
                 success: function(result){
-                    if(result.code == 0){//登录成功
+                    if(result.code == 200){//登录成功
                         parent.location.href ='index.html';
                     }else{
                         vm.error = true;
