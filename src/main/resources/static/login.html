@@ -119,45 +119,6 @@ var vm = new Vue({
         }
     }
 });
-/*var vm = new Vue({
-	el:'#rrapp',
-	data:{
-	    user:{},
-		error: false,
-		errorMsg: '',
-		src: 'captcha.jpg'
-	},
-    beforeCreate: function(){
-        if(self != top){
-            top.location.href = self.location.href;
-        }
-    },
-	methods: {
-		refreshCode: function(){
-            this.src = "captcha.jpg?t=" + $.now();
-		},
-		login: function (event) {
-		    $.ajax({
-                type: "POST",
-                url: "/sys/login",
-                data: JSON.stringify(vm.user),
-                dataType: "json",
-                contentType: "application/json",
-                cache: false,
-                success: function(result){
-                    if(result.code == 200){//登录成功
-                        parent.location.href ='index.html';
-                    }else{
-                        vm.error = true;
-                        vm.errorMsg = result.msg;
-
-                        vm.refreshCode();
-                    }
-                }
-            });
-		}
-	}
-});*/
 </script>
 </body>
 </html>

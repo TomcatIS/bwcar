@@ -48,4 +48,12 @@ public class UserLoginController {
             e.printStackTrace();
         }
     }
+    // 修改密码
+    @RequestMapping("/sys/user/updatePassword")
+    @ResponseBody
+    public R updatePassword(@RequestParam String password, @RequestParam String newPassword){
+        System.out.println(password);
+        System.out.println(newPassword);
+        return R.ok();
+    }
 }
