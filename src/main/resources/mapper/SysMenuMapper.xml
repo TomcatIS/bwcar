@@ -255,4 +255,29 @@
       order_num = #{orderNum,jdbcType=INTEGER}
     where menu_id = #{menuId,jdbcType=BIGINT}
   </update>
+
+    <select id="">
+        select
+          m.menu_id,m.parent_id,m.name,m.url,m.perms,m.type,m.icon,m.order_num,
+          p.name parentName
+        from
+          sys_menu m
+        left join
+          sys_menu p
+        on
+          m.parent_id=p.menu_id
+        <where>
+          where标签会自动去掉第一个条件语句的前置‘and’
+          <if test="search != null and search != ''">
+            /*因为#{...}解析成sql语句时候，会在变量外侧自动加单引号'  '，
+            所以这里 % 需要使用双引号"  "，不能使用单引号 '  '*/
+            /*另一种写法:search like concat('%',#{search},'%')*/
+            and search like "%"#{search}"%"
+          </if>
+          <if test="order != null and order != ''">
+            order by #{sort} #{order}
+          </if>
+        </where>
+    </select>
+
 </mapper>

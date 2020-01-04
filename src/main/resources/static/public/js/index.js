@@ -13,14 +13,23 @@ Vue.component('menu-item', {
 				<menu-item :item="item" v-for="item in item.list"></menu-item>
 			</ul>
 			<!--type为1表示是1级菜单，内容和样式为下面这个a标签-->
-			<!--为href添加一个"#"号，点击a标签只会导致地址栏拼接一个href属性的值，也就是#item.url-->
-			<a v-if="item.type === 1" :href="'#'+item.url">
+			<!--为1级菜单绑定点击事件用于切换菜单内容-->
+			<a v-if="item.type === 1" :href="'#'+item.url" v-on:click="ToggleMainSrc">
 				<i v-if="item.icon != null" :class="item.icon"></i>
 				<i v-else class="fa fa-circle-o"></i> 
 				{{item.name}}
 			</a>
 		</li>
-	`
+	`,
+	methods: {
+		ToggleMainSrc: function(event){
+			// 获取绑定标签的href属性值
+			var url = event.target.href;
+			// 获取菜单内容对应的html的路径
+			var index = url.indexOf("#");
+			vm.main = url.substring(index + 1);
+		}
+	}
 });
 
 // iframe自适应高度
@@ -95,17 +104,15 @@ var vm = new Vue({
 		this.getMenuList();
 		this.getUser();
 	},
-	/*每个菜单是一个a标签，也就是上面vue模板中的a标签。可以看到，a标签的href属性与vue进行了绑定(只不过是无参的)。所以当点击不同的
-	菜单时，href属性值也会发生改变，由于与vue进行了绑定，数据发生变化会触发下面这个updated钩子函数*/
-	updated: function(){
+	/*updated: function(){
 		//路由
 		var router = new Router();
 		routerList(router, vm.menuList);
 		router.start();
-	}
+	}*/
 });
 
-function routerList(router, menuList){
+/*function routerList(router, menuList){
 	for(var key in menuList){
 		var menu = menuList[key];
 		// 如果是0级菜单就递归
@@ -125,5 +132,5 @@ function routerList(router, menuList){
 			});
 		}
 	}
-}
+}*/
 
