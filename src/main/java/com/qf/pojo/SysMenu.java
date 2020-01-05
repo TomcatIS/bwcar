@@ -9,6 +9,8 @@ public class SysMenu implements Serializable {
 
     private String name;
 
+    private String parentName;
+
     private String url;
 
     private String perms;
@@ -43,6 +45,14 @@ public class SysMenu implements Serializable {
 
     public void setName(String name) {
         this.name = name == null ? null : name.trim();
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 
     public String getUrl() {

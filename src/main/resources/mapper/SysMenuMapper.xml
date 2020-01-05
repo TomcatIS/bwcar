@@ -5,6 +5,8 @@
     <id column="menu_id" property="menuId" jdbcType="BIGINT" />
     <result column="parent_id" property="parentId" jdbcType="BIGINT" />
     <result column="name" property="name" jdbcType="VARCHAR" />
+    <!--查询结果为多表字段，需要在pojo中多加入一个字段-->
+    <result column="parentName" property="parentName" jdbcType="VARCHAR"></result>
     <result column="url" property="url" jdbcType="VARCHAR" />
     <result column="perms" property="perms" jdbcType="VARCHAR" />
     <result column="type" property="type" jdbcType="INTEGER" />
@@ -255,8 +257,12 @@
       order_num = #{orderNum,jdbcType=INTEGER}
     where menu_id = #{menuId,jdbcType=BIGINT}
   </update>
-
-    <select id="">
+  <!--因为#{...}解析成sql语句时候，会在变量外侧自动加单引号'  '，
+  所以这里 % 需要使用双引号"  "，不能使用单引号 '  '*/
+  /*另一种写法:search like concat('%',#{search},'%')-->
+  <!--where标签会自动去掉第一个条件语句的前置‘and’-->
+  <!--sql中不能写注释-->
+    <select id="findMenuByPage" parameterType="com.qf.dto.QueryDTO" resultMap="BaseResultMap">
         select
           m.menu_id,m.parent_id,m.name,m.url,m.perms,m.type,m.icon,m.order_num,
           p.name parentName
@@ -267,17 +273,24 @@
         on
           m.parent_id=p.menu_id
         <where>
-          where标签会自动去掉第一个条件语句的前置‘and’
           <if test="search != null and search != ''">
-            /*因为#{...}解析成sql语句时候，会在变量外侧自动加单引号'  '，
-            所以这里 % 需要使用双引号"  "，不能使用单引号 '  '*/
-            /*另一种写法:search like concat('%',#{search},'%')*/
-            and search like "%"#{search}"%"
+            and m.name like "%"#{search}"%"
           </if>
-          <if test="order != null and order != ''">
-            order by #{sort} #{order}
+          <if test="sort != null and sort != ''">
+            and order by m.${sort} ${order}
           </if>
         </where>
     </select>
+
+  <!--删除菜单-->
+  <delete id="deleteMenu" parameterType="java.util.List">
+    delete from
+      sys_menu
+    where
+      menu_id in
+      <foreach collection="list" open="(" close=")" separator="," item="id">
+        #{id}
+      </foreach>
+  </delete>
 
 </mapper>

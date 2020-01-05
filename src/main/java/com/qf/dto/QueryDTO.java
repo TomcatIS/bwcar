@@ -9,9 +9,23 @@ public class QueryDTO {
     private Integer limit;
     // 排序方式：升序，降序
     private String order;
+    // 每页的起始位置
     private Integer offset;
     // 排序字段
     private String sort;
+    // 搜索的内容
+    private String search;
+
+    @Override
+    public String toString() {
+        return "QueryDTO{" +
+                "limit=" + limit +
+                ", order='" + order + '\'' +
+                ", offset=" + offset +
+                ", sort='" + sort + '\'' +
+                ", search='" + search + '\'' +
+                '}';
+    }
 
     public Integer getLimit() {
         return limit;
@@ -52,7 +66,4 @@ public class QueryDTO {
     public void setSearch(String search) {
         this.search = search;
     }
-
-    // 搜索的内容
-    private String search;
 }

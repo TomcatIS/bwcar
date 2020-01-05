@@ -1,5 +1,6 @@
 package com.qf.dao;
 
+import com.qf.dto.QueryDTO;
 import com.qf.pojo.SysMenu;
 import com.qf.pojo.SysMenuExample;
 import java.util.List;
@@ -27,4 +28,9 @@ public interface SysMenuMapper {
     int updateByPrimaryKeySelective(SysMenu record);
 
     int updateByPrimaryKey(SysMenu record);
+
+    List<SysMenu> findMenuByPage(QueryDTO queryDTO);
+
+    // 删除菜单
+    int deleteMenu(List<Long> ids);
 }

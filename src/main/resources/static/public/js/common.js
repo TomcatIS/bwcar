@@ -5,14 +5,16 @@ $.ajaxSetup({
     cache: false
 });
 
+
+
 //选择多条记录
 function getSelectedRows() {
     //返回所有选择的行，当没有选择的记录时，返回一个空数组
     var rows = $("#table").bootstrapTable('getSelections');
-    if (rows.length == 0) {
+    /*if (rows.length == 0) {
         layer.alert('请选择一条记录');
         return;
-    }
+    }*/
     return rows;
 }
 

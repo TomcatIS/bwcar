@@ -1,6 +1,6 @@
 $(function(){
     var option = {
-        url: '../sys/menu/list',
+        url: '/sys/menu/list',
         pagination: true,	//显示分页条
         sidePagination: 'server',//服务器端分页
         showRefresh: true,  //显示刷新按钮
@@ -62,40 +62,38 @@ var vm = new Vue({
         title: null,
         menu:{}
     },
+
+
+
     methods:{
         del: function(){
             var rows = getSelectedRows();
-            if(rows == null){
-                return ;
+            if (rows == null){
+                layer.alert("请至少选择一行数据");
+                return;
             }
-            var id = 'menuId';
-            //提示确认框
-            layer.confirm('您确定要删除所选数据吗？', {
-                btn: ['确定', '取消'] //可以无限个按钮
-            }, function(index, layero){
-                var ids = new Array();
-                //遍历所有选择的行数据，取每条数据对应的ID
-                $.each(rows, function(i, row) {
-                    ids[i] = row[id];
-                });
-
-                $.ajax({
-                    type: "POST",
-                    url: "/sys/menu/del",
-                    data: JSON.stringify(ids),
-                    success : function(r) {
-                        if(r.code === 0){
-                            layer.alert('删除成功');
-                            $('#table').bootstrapTable('refresh');
-                        }else{
-                            layer.alert(r.msg);
+            layer.confirm("确定删除所选数据吗？", {
+                btn: ['确定', '取消'],
+                btn1: function(index, layero){
+                    var ids = new Array();
+                    $.each(rows, function(index, row){
+                        ids[index] = row.menuId;
+                    });
+                    $.ajax({
+                        type: 'POST',
+                        url: '/sys/menu/del',
+                        data: JSON.stringify(ids),
+                        success: function(result){
+                            if (result.code == 200){
+                                layer.alert("删除成功");
+                                $("table").bootstrapTable("refresh");
+                            }else {
+                                layer.alert(result.msg);
+                            }
                         }
-                    },
-                    error : function() {
-                        layer.alert('服务器没有返回数据，可能服务器忙，请重试');
-                    }
-                });
-            });
+                    });
+                }
+            })
         },
         add: function(){
             vm.showList = false;

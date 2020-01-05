@@ -52,8 +52,6 @@ public class UserLoginController {
     @RequestMapping("/sys/user/updatePassword")
     @ResponseBody
     public R updatePassword(@RequestParam String password, @RequestParam String newPassword){
-        System.out.println(password);
-        System.out.println(newPassword);
         return R.ok();
     }
 }
