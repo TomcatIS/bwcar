@@ -63,8 +63,6 @@ var vm = new Vue({
         menu:{}
     },
 
-
-
     methods:{
         del: function(){
             var rows = getSelectedRows();
@@ -117,7 +115,7 @@ var vm = new Vue({
             });
         },
         saveOrUpdate: function (event) {
-            var url = vm.menu.menuId == null ? "../sys/menu/save" : "../sys/menu/update";
+            var url = vm.menu.menuId == null ? "/sys/menu/save" : "/sys/menu/update";
             $.ajax({
                 type: "POST",
                 url: url,
@@ -177,16 +175,16 @@ var vm = new Vue({
 
             //加载菜单树
             $.get("../sys/menu/select", function(r){
-                //设置ztree的数据
+                //生成ztree树
                 ztree = $.fn.zTree.init($("#menuTree"), setting, r.menuList);
-
-                //编辑（update）时，打开tree，自动高亮选择的条目
+                // 表示根据menuId获取节点，获取menuId=vm.menu.parentId的节点
                 var node = ztree.getNodeByParam("menuId", vm.menu.parentId);
-                //选中tree菜单中的对应节点
+                // 表示点击新增按钮后，默认选中下面这个节点
                 ztree.selectNode(node);
-                //编辑（update）时，根据当前的选中节点，为编辑表单的“上级菜单”回填值
+                // 表示默认parentName为node.name("一级菜单")
                 vm.menu.parentName = node.name;
             });
+
         }
     }
 });

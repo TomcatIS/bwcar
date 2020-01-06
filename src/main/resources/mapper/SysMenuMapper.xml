@@ -293,4 +293,9 @@
       </foreach>
   </delete>
 
+  <!--显示新增树形菜单-->
+  <select id="findMenu" resultMap="BaseResultMap">
+    select * from sys_menu where type!=2
+  </select>
+
 </mapper>

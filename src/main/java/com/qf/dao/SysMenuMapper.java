@@ -33,4 +33,6 @@ public interface SysMenuMapper {
 
     // 删除菜单
     int deleteMenu(List<Long> ids);
+
+    List<SysMenu> findMenu();
 }

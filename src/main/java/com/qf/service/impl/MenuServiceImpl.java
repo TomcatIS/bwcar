@@ -47,4 +47,16 @@ public class MenuServiceImpl implements MenuService {
             return R.error("未知原因，删除失败");
         }
     }
+
+    @Override
+    public List<SysMenu> selectMenu() {
+        List<SysMenu> menuList = this.sysMenuMapper.findMenu();
+        SysMenu sysMenu = new SysMenu();
+        sysMenu.setName("一级菜单");
+        sysMenu.setParentId(-1L);
+        sysMenu.setMenuId(0L);
+        sysMenu.setType(0);
+        menuList.add(sysMenu);
+        return menuList;
+    }
 }

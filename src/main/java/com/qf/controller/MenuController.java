@@ -2,6 +2,7 @@ package com.qf.controller;
 
 import com.qf.dto.DataGridResult;
 import com.qf.dto.QueryDTO;
+import com.qf.pojo.SysMenu;
 import com.qf.service.MenuService;
 import com.qf.util.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +11,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:
@@ -39,5 +42,16 @@ public class MenuController {
     @ResponseBody
     public R deleteMenu(@RequestBody List<Long> ids){
         return this.menuService.deleteMenu(ids);
+    }
+    /**
+     * 新增菜单时，显示树形菜单
+     * */
+    @RequestMapping("/sys/menu/select")
+    @ResponseBody
+    public Map findMenu(){
+        List<SysMenu> menuList = this.menuService.selectMenu();
+        HashMap<String, List> map = new HashMap<>();
+        map.put("menuList", menuList);
+        return map;
     }
 }

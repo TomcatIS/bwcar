@@ -2,6 +2,7 @@ package com.qf.service;
 
 import com.qf.dto.DataGridResult;
 import com.qf.dto.QueryDTO;
+import com.qf.pojo.SysMenu;
 import com.qf.util.R;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface MenuService {
     DataGridResult findMenu(QueryDTO queryDTO);
     // 删除菜单
     R deleteMenu(List<Long> ids);
+
+    List<SysMenu> selectMenu();
 }
