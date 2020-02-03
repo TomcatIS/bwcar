@@ -208,4 +208,16 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where role_id = #{roleId,jdbcType=BIGINT}
   </update>
+  <!--根据用户id查询用户角色-->
+  <select id="listRolesByUserId" parameterType="long" resultType="String">
+    select role_name
+    from
+      sys_user_role a
+    inner join
+      sys_user b
+    on
+      a.role_id=b.role_id
+    where
+      a.user_id=#{userId}
+  </select>
 </mapper>

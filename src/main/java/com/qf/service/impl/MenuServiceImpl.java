@@ -13,12 +13,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class MenuServiceImpl implements MenuService {
     @Autowired
     private SysMenuMapper sysMenuMapper;
+    
     @Override
     public DataGridResult findMenu(QueryDTO queryDTO) {
         PageHelper.offsetPage(queryDTO.getOffset(), queryDTO.getLimit());
@@ -28,6 +32,7 @@ public class MenuServiceImpl implements MenuService {
         List<SysMenu> menuByPage = this.sysMenuMapper.findMenuByPage(queryDTO);
         PageInfo<SysMenu> pageInfo = new PageInfo<SysMenu>(menuByPage);
         long total = pageInfo.getTotal();
+        // pageInfo.getList()因该是返回一页的数据，但打印出来没看到封装的信息
         DataGridResult dataGridResult = new DataGridResult(total, pageInfo.getList());
         return dataGridResult;
     }
@@ -58,5 +63,32 @@ public class MenuServiceImpl implements MenuService {
         sysMenu.setType(0);
         menuList.add(sysMenu);
         return menuList;
+    }
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public R saveMenu(SysMenu sysMenu) {
+        int i = this.sysMenuMapper.saveMenu(sysMenu);
+        if (i > 0){
+            return R.ok("添加成功");
+        }else{
+            return R.error("添加失败");
+        }
+    }
+
+    @Override
+    public List<String> listMenuPermsByUserId(Long userId) {
+        List<String> perms = this.sysMenuMapper.listMenuPermsByUserId(userId);
+        Set<String> hashset = new HashSet<>();
+        for (String perm : perms){
+            if (perm != null && !perm.equals("")) {
+                String[] permArr = perm.split(",");
+                for (String x : permArr){
+                    hashset.add(x);
+                }
+            }
+        }
+        List<String> permsList = new ArrayList<>();
+        permsList.addAll(hashset);
+        return permsList;
     }
 }

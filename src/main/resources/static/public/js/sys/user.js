@@ -116,12 +116,7 @@ var vm  = new Vue({
             });
         },
         exportFun:function(){
-            // $.get("../sys/user/export", function(r){
-            //         if (r.code==0){
-            //             layer.alert(r.msg);
-            //         }
-            // });
-            location.href="/sys/user/export";
+            window.location.href="/sys/user/export";
         },
         reload: function (event) {
             vm.showList = true;

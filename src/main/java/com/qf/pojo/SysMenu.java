@@ -94,4 +94,19 @@ public class SysMenu implements Serializable {
     public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
     }
+
+    @Override
+    public String toString() {
+        return "SysMenu{" +
+                "menuId=" + menuId +
+                ", parentId=" + parentId +
+                ", name='" + name + '\'' +
+                ", parentName='" + parentName + '\'' +
+                ", url='" + url + '\'' +
+                ", perms='" + perms + '\'' +
+                ", type=" + type +
+                ", icon='" + icon + '\'' +
+                ", orderNum=" + orderNum +
+                '}';
+    }
 }

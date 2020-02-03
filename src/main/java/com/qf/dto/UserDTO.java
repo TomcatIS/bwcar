@@ -9,7 +9,7 @@ public class UserDTO {
     private String username;
     private String password;
     private String captcha;
-    private String rememberMe;
+    private Boolean rememberMe;
 
     public String getUsername() {
         return username;
@@ -35,11 +35,11 @@ public class UserDTO {
         this.captcha = captcha;
     }
 
-    public String getRememberMe() {
+    public Boolean getRememberMe() {
         return rememberMe;
     }
 
-    public void setRememberMe(String rememberMe) {
+    public void setRememberMe(Boolean rememberMe) {
         this.rememberMe = rememberMe;
     }
 }

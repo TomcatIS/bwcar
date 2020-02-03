@@ -17,7 +17,6 @@ public interface SysRoleMapper {
     int insertSelective(SysRole record);
 
     List<SysRole> selectByExample(SysRoleExample example);
-
     SysRole selectByPrimaryKey(Long roleId);
 
     int updateByExampleSelective(@Param("record") SysRole record, @Param("example") SysRoleExample example);
@@ -27,4 +26,6 @@ public interface SysRoleMapper {
     int updateByPrimaryKeySelective(SysRole record);
 
     int updateByPrimaryKey(SysRole record);
+
+    List<String> listRolesByUserId(@Param("userId") Long userId);
 }

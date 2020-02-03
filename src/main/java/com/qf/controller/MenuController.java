@@ -54,4 +54,12 @@ public class MenuController {
         map.put("menuList", menuList);
         return map;
     }
+    /**
+     * 保存新增菜单信息
+     * */
+    @RequestMapping("/sys/menu/save")
+    @ResponseBody
+    public R saveMenu(@RequestBody SysMenu sysMenu){
+        return this.menuService.saveMenu(sysMenu);
+    }
 }

@@ -1,8 +1,10 @@
 package com.qf.dao;
 
+import com.qf.dto.QueryDTO;
 import com.qf.pojo.SysUser;
 import com.qf.pojo.SysUserExample;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -29,4 +31,12 @@ public interface SysUserMapper {
     int updateByPrimaryKeySelective(SysUser record);
 
     int updateByPrimaryKey(SysUser record);
+
+    // 查询所有用户
+    List<SysUser> selectAllUser(QueryDTO queryDTO);
+
+    // 导出用户
+    List<Map<String, Object>> exportUser();
+
+    SysUser getUserByName(String username);
 }

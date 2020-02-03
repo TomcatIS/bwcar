@@ -298,4 +298,21 @@
     select * from sys_menu where type!=2
   </select>
 
+  <!--保存新增菜单信息-->
+  <insert id="saveMenu" parameterType="com.qf.pojo.SysMenu">
+    insert into
+      sys_menu(parent_id,name,url,perms,type,icon,order_num)
+      values(#{parentId},#{name},#{url},#{perms},#{type},#{icon},#{orderNum})
+  </insert>
+
+  <!--根据用户id查询菜单权限-->
+  <select id="listMenuPermsByUserId" parameterType="long" resultType="String">
+    select d.perms
+    from
+      sys_user a inner join sys_user_role b on a.user_id=b.usere_id
+      inner join sys_role_menu c on b.role_id=c.role_id
+      inner join sys_menu d on c.menu_id=d.menu_id
+    where
+      a.user_id=#{userId}
+  </select>
 </mapper>

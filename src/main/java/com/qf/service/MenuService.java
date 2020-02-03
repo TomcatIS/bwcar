@@ -20,4 +20,8 @@ public interface MenuService {
     R deleteMenu(List<Long> ids);
 
     List<SysMenu> selectMenu();
+    // 新增菜单
+    R saveMenu(SysMenu sysMenu);
+
+    List<String> listMenuPermsByUserId(Long userId);
 }

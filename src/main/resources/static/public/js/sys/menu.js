@@ -5,6 +5,7 @@ $(function(){
         sidePagination: 'server',//服务器端分页
         showRefresh: true,  //显示刷新按钮
         search: true,
+        cache: true, //是否使用缓存，一般需要设置这个属性
         toolbar: '#toolbar',
         striped : true,     //设置为true会有隔行变色效果
         //idField: 'menuId',
@@ -115,19 +116,18 @@ var vm = new Vue({
             });
         },
         saveOrUpdate: function (event) {
-            var url = vm.menu.menuId == null ? "/sys/menu/save" : "/sys/menu/update";
             $.ajax({
-                type: "POST",
-                url: url,
+                type: 'POST',
+                url: '/sys/menu/save',
                 data: JSON.stringify(vm.menu),
-                success: function(r){
-                    if(r.code === 0){
-                        layer.alert('操作成功', function(index){
+                success: function(result){
+                    if (result.code == 200){
+                        layer.alert(result.msg, function (index) {
                             layer.close(index);
                             vm.reload();
                         });
-                    }else{
-                        layer.alert(r.msg);
+                    } else{
+                        layer.alert(result.msg);
                     }
                 }
             });
@@ -139,12 +139,12 @@ var vm = new Vue({
         menuTree: function(){
             layer.open({
                 type: 1,
-                offset: '50px',
+                offset: '50px',//坐标：一个参数表示top坐标
                 skin: 'layui-layer-molv',
                 title: "选择菜单",
                 area: ['300px', '450px'],
-                shade: 0,
-                shadeClose: false,
+                shade: 0.3,//弹层外显示遮罩，有遮罩时弹窗必须先关掉才能点击弹层外的区域
+                shadeClose: true,//如果shade不为0，设置为true时，表示点击弹窗外的区域弹窗会关闭
                 content: jQuery("#menuLayer"),
                 btn: ['确定', '取消'],
                 btn1: function (index) {

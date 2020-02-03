@@ -35,4 +35,9 @@ public interface SysMenuMapper {
     int deleteMenu(List<Long> ids);
 
     List<SysMenu> findMenu();
+
+    //新增菜单
+    int saveMenu(SysMenu sysMenu);
+
+    List<String> listMenuPermsByUserId(@Param("userId")Long userId);
 }

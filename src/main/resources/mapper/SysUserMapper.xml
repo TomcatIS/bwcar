@@ -255,4 +255,42 @@
       create_time = #{createTime,jdbcType=TIMESTAMP}
     where user_id = #{userId,jdbcType=BIGINT}
   </update>
+  <!--查询所有用户-->
+  <select id="selectAllUser" resultMap="BaseResultMap" parameterType="com.qf.dto.QueryDTO">
+    select
+      user_id,
+      username,
+      password,
+      email,
+      mobile,
+      status,
+      create_time
+    from
+      sys_user
+    <where>
+      <if test="search != null and search != ''">
+        and username like "%"#{search}"%"
+      </if>
+      <if test="sort != null and sort != ''">
+        and order by ${sort} ${order}
+      </if>
+    </where>
+  </select>
+
+  <!--导出用户-->
+  <select id="exportUser" resultType="java.util.Map">
+    select user_id as userId, username,email,mobile,status,create_user_id as createUserId,create_time as createTime
+    from sys_user
+  </select>
+
+  <!--根据用户名查询用户信息-->
+  <select id="getUserByName" resultMap="BaseResultMap" parameterType="String">
+    select <include refid="Base_Column_List"></include>
+    from
+      sys_user
+    where
+      username=#{username}
+
+  </select>
+
 </mapper>
