@@ -6,6 +6,7 @@ import com.qf.pojo.SysMenu;
 import com.qf.util.R;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * description:
@@ -24,4 +25,7 @@ public interface MenuService {
     R saveMenu(SysMenu sysMenu);
 
     List<String> listMenuPermsByUserId(Long userId);
+
+    // 查询用户自己的菜单
+    Map<String ,Object> findUserMenus(Long userId);
 }

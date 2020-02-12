@@ -10,6 +10,15 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
     @Autowired
     private SysRoleMapper sysRoleMapper;
+
+    /**
+     * 根据用户名查询用户ID
+     **/
+    @Override
+    public Long getUserIdByUserName(String username) {
+        return this.sysRoleMapper.getUserIdByUserName(username);
+    }
+
     @Override
     public List<String> listRolesByUserId(Long userId) {
         return this.sysRoleMapper.listRolesByUserId(userId);

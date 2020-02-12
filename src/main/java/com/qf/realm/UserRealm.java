@@ -34,8 +34,10 @@ public class UserRealm extends AuthorizingRealm {
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
         // 获取用户名
-        SysUser primaryPrincipal = (SysUser)principalCollection.getPrimaryPrincipal();
-        Long userId = primaryPrincipal.getUserId();
+        SysUser user = (SysUser) principalCollection.getPrimaryPrincipal();
+        // 根据用户名查询用户ID
+        Long userId = user.getUserId();
+        // Long userId = this.roleService.getUserIdByUserName(username);
         // 查询用户角色
         List<String> roles = this.roleService.listRolesByUserId(userId);
         // 查询用户权限
@@ -55,7 +57,7 @@ public class UserRealm extends AuthorizingRealm {
         String username = usernamePasswordToken.getUsername();
         char[] password = usernamePasswordToken.getPassword();
         SysUser user = this.sysUserService.getUserByName(username);
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(username, user.getPassword(), this.getName());
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), this.getName());
         return info;
     }
 }

@@ -210,14 +210,22 @@
   </update>
   <!--根据用户id查询用户角色-->
   <select id="listRolesByUserId" parameterType="long" resultType="String">
-    select role_name
+    select c.role_name
     from
       sys_user_role a
     inner join
       sys_user b
     on
-      a.role_id=b.role_id
+      a.user_id=b.user_id
+    inner join
+      sys_role c
+    on a.role_id=c.role_id
     where
       a.user_id=#{userId}
+  </select>
+
+  <!--根据用户名查询用户Id-->
+  <select id="getUserIdByUserName" parameterType="String" resultType="Long">
+    select user_id from sys_user where username=#{0}
   </select>
 </mapper>

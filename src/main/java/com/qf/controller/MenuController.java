@@ -3,8 +3,11 @@ package com.qf.controller;
 import com.qf.dto.DataGridResult;
 import com.qf.dto.QueryDTO;
 import com.qf.pojo.SysMenu;
+import com.qf.pojo.SysUser;
 import com.qf.service.MenuService;
 import com.qf.util.R;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,6 +34,7 @@ public class MenuController {
      */
     @RequestMapping("/sys/menu/list")
     @ResponseBody
+    @RequiresPermissions("sys:menu:list")
     public DataGridResult findMenu(QueryDTO queryDTO){
         DataGridResult menu = this.menuService.findMenu(queryDTO);
         return menu;
@@ -61,5 +65,16 @@ public class MenuController {
     @ResponseBody
     public R saveMenu(@RequestBody SysMenu sysMenu){
         return this.menuService.saveMenu(sysMenu);
+    }
+
+    /**
+     * 获取用户菜单
+     * */
+    @RequestMapping("/sys/menu/user")
+    @ResponseBody
+    public Map<String, Object> getUserMenus(){
+        SysUser user = (SysUser)SecurityUtils.getSubject().getPrincipal();
+        Map<String, Object> userMenus = this.menuService.findUserMenus(user.getUserId());
+        return userMenus;
     }
 }

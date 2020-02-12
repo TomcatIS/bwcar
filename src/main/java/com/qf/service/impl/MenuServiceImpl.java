@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class MenuServiceImpl implements MenuService {
@@ -90,5 +87,24 @@ public class MenuServiceImpl implements MenuService {
         List<String> permsList = new ArrayList<>();
         permsList.addAll(hashset);
         return permsList;
+    }
+
+    /**
+     * 查询用户自己的菜单
+     * */
+    @Override
+    public Map<String, Object> findUserMenus(Long userId) {
+        // 根据用户id查询一级目录
+        List<Map<String, Object>> directorys = this.sysMenuMapper.findDirMenuByUserId(userId);
+        for (Map<String, Object> directory : directorys){
+            Long menuId = Long.parseLong(directory.get("menuId") + "");
+            List<Map<String, Object>> menus = this.sysMenuMapper.findMenuNotButtonByUserId(menuId, userId);
+            directory.put("list", menus);
+        }
+        Map<String, Object> map = new HashMap<>();
+        List<String> perms = this.sysMenuMapper.listMenuPermsByUserId(userId);
+        map.put("menuList", directorys);
+        map.put("permissions", perms);
+        return map;
     }
 }

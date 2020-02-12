@@ -309,10 +309,38 @@
   <select id="listMenuPermsByUserId" parameterType="long" resultType="String">
     select d.perms
     from
-      sys_user a inner join sys_user_role b on a.user_id=b.usere_id
+      sys_user a inner join sys_user_role b on a.user_id=b.user_id
       inner join sys_role_menu c on b.role_id=c.role_id
       inner join sys_menu d on c.menu_id=d.menu_id
     where
       a.user_id=#{userId}
+  </select>
+
+  <!--查询一级菜单-->
+  <select id="findDirMenuByUserId" parameterType="long" resultType="java.util.Map">
+    select  DISTINCT
+    m.menu_id menuId, parent_id parenId, name name, type , icon
+    from sys_menu m
+    INNER JOIN sys_role_menu rm
+    on m.menu_id = rm.menu_id
+    INNER JOIN sys_user_role ur
+    on rm.role_id = ur.role_id
+    where type = 0 and ur.user_id = #{userId}
+  </select>
+
+  <!-- 查询一级目录对应的菜单 -->
+  <select id="findMenuNotButtonByUserId"  resultType="java.util.Map">
+    select DISTINCT
+    m.menu_id menuId, parent_id parenId, name , type , icon,url
+    from sys_menu m
+    INNER JOIN sys_role_menu rm
+    on m.menu_id = rm.menu_id
+    INNER JOIN sys_user_role ur
+    on rm.role_id = ur.role_id
+    INNER JOIN sys_user u
+    on ur.user_id = u.user_id
+    where m.type = 1 and
+    m.parent_id = #{parentId}
+    and u.user_id=#{userId}
   </select>
 </mapper>

@@ -4,6 +4,8 @@ import com.qf.dto.QueryDTO;
 import com.qf.pojo.SysMenu;
 import com.qf.pojo.SysMenuExample;
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Param;
 
 public interface SysMenuMapper {
@@ -36,8 +38,14 @@ public interface SysMenuMapper {
 
     List<SysMenu> findMenu();
 
-    //新增菜单
+    // 新增菜单
     int saveMenu(SysMenu sysMenu);
 
     List<String> listMenuPermsByUserId(@Param("userId")Long userId);
+
+    // 查询一级目录
+    List<Map<String, Object>> findDirMenuByUserId(@Param("userId")Long userId);
+
+    // 查询一级目录对应的菜单
+    List<Map<String, Object>>findMenuNotButtonByUserId(@Param("parentId")Long parentId, @Param("userId")Long userId);
 }

@@ -58,14 +58,26 @@ var vm = new Vue({
 	// 这两个函数改变了vm的data数据，所以会触发后面的updated钩子函数，每个函数都会触发一次
 	methods: {
 		getMenuList: function(){
-			$.getJSON("/json/menu_user.json", function (data) {
+			/*静态获取用户菜单*/
+			/*$.getJSON("/json/menu_user.json", function (data) {
+				// 这里不能使用this.menuList
+				vm.menuList = data.menuList;
+				window.permissions = data.permissions;
+			})*/
+			$.getJSON("/sys/menu/user", function (data) {
 				// 这里不能使用this.menuList
 				vm.menuList = data.menuList;
 				window.permissions = data.permissions;
 			})
 		},
 		getUser: function(){
-			 $.getJSON("/json/user_info.json", function(data){
+			/*静态获取用户信息*/
+			 /*$.getJSON("/json/user_info.json", function(data){
+				vm.user = data.user;
+			});*/
+
+			 /*动态获取用户信息*/
+			$.getJSON("/sys/user/info?_"+$.now(), function(data){
 				vm.user = data.user;
 			});
 		},

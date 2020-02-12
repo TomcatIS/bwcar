@@ -110,9 +110,9 @@ var vm = new Vue({
                     if (result.code == 200){
                         window.location.href="/index.html";
                     }else{
-                        this.error = true;
-                        this.errorMsg = result.msg;
-                        this.refreshCode();
+                        vm.error = true;
+                        vm.errorMsg = result.msg;
+                        vm.refreshCode();
                     }
                 }
             });

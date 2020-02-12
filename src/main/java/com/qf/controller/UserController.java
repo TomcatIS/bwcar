@@ -17,17 +17,22 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * description:
- * 用户登录
+ * 用户登录，登出
  * 生成验证码
  * */
 @Controller
-public class UserLoginController {
+public class UserController {
     @Autowired
     private DefaultKaptcha defaultKaptcha;
 
+    /**
+     * 用户登录
+     * */
     @ResponseBody
     @RequestMapping("/sys/login")
     public R login(@RequestBody UserDTO userDTO){
@@ -52,6 +57,15 @@ public class UserLoginController {
             return R.error("用户名或密码错误");
         }
         return R.ok();
+    }
+
+    /**
+     * 用户登出
+     * */
+    @RequestMapping("logout")
+    public String logout(){
+        SecurityUtils.getSubject().logout();
+        return "redirect:login.html";
     }
 
     /**
@@ -82,4 +96,18 @@ public class UserLoginController {
     public R updatePassword(@RequestParam String password, @RequestParam String newPassword){
         return R.ok();
     }
+
+    /***
+     * 获取用户信息
+     **/
+    @RequestMapping("/sys/user/info")
+    @ResponseBody
+    public Map<String, Object> getUserInfo(){
+        Subject subject = SecurityUtils.getSubject();
+        Object principal = subject.getPrincipal();
+        Map<String, Object> map = new HashMap<>();
+        map.put("user", principal);
+        return map;
+    }
+
 }
