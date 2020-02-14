@@ -33,11 +33,9 @@ public class UserRealm extends AuthorizingRealm {
      * */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        // 获取用户名
+        // 获取用户
         SysUser user = (SysUser) principalCollection.getPrimaryPrincipal();
-        // 根据用户名查询用户ID
         Long userId = user.getUserId();
-        // Long userId = this.roleService.getUserIdByUserName(username);
         // 查询用户角色
         List<String> roles = this.roleService.listRolesByUserId(userId);
         // 查询用户权限
