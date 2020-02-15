@@ -17,25 +17,28 @@ import java.net.URLEncoder;
 import java.util.List;
 /**
  * description:
- * 测试数据库连接是否成功
- * @author zhangqi
- * 2019/12/26
+ * 用户管理功能控制层
+ * 创建者: zhangqi
+ * 创建时间: 2019/12/26
  * */
 @Controller
 public class SysUserController {
     @Autowired
     private SysUserService sysUserService;
 
+     /**
+      * 查询所有用户
+      * */
     @ResponseBody
     @RequestMapping("/sys/user/list")
-    public DataGridResult selectAllUser(QueryDTO queryDTO){
-        return sysUserService.selectAllUser(queryDTO);
+    public DataGridResult listAllUsers(QueryDTO queryDTO){
+        return sysUserService.listAllUsers(queryDTO);
     }
 
     @RequestMapping("/sys/user/export")
-    public void exportUser(HttpServletResponse response){
-        Workbook workbook = this.sysUserService.exportUser();
-        // 支持任何类型的文件
+    public void exportUserInfo(HttpServletResponse response){
+        Workbook workbook = this.sysUserService.exportUserInfo();
+        // 设置相应内容为二进制流文件
         response.setContentType("application/octet-stream");
         String fileName = "员工信息表.xls";
         try {

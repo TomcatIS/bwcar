@@ -8,7 +8,9 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
+/**
+ * 用户管理功能持久层接口
+ * */
 public interface SysUserMapper {
     int countByExample(SysUserExample example);
 
@@ -32,11 +34,11 @@ public interface SysUserMapper {
 
     int updateByPrimaryKey(SysUser record);
 
-    // 查询所有用户
-    List<SysUser> selectAllUser(QueryDTO queryDTO);
+    /**查询所有用户*/
+    List<SysUser> listAllUsers(QueryDTO queryDTO);
 
-    // 导出用户
-    List<Map<String, Object>> exportUser();
+    /** apache poi 实现excel导出用户信息*/
+    List<Map<String, Object>> exportUserInfo();
 
     SysUser getUserByName(String username);
 }

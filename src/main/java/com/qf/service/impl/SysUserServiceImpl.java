@@ -18,23 +18,34 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+/**
+ * description:
+ * 用户管理功能服务层
+ * 创建时间：
+ * 创建者：zhangqi
+ * */
 @Service
 public class SysUserServiceImpl implements SysUserService {
     @Autowired
     private SysUserMapper sysUserMapper;
 
+    /**
+     * 查询所有用户
+     * */
     @Override
-    public DataGridResult selectAllUser(QueryDTO queryDTO) {
+    public DataGridResult listAllUsers(QueryDTO queryDTO) {
         PageHelper.offsetPage(queryDTO.getOffset(), queryDTO.getLimit());
-        List<SysUser> sysUsers = this.sysUserMapper.selectAllUser(queryDTO);
-        PageInfo<SysUser> pageInfo = new PageInfo<SysUser>(sysUsers);
+        List<SysUser> allUsers = this.sysUserMapper.listAllUsers(queryDTO);
+        PageInfo<SysUser> pageInfo = new PageInfo<>(allUsers);
         DataGridResult dataGridResult = new DataGridResult(pageInfo.getTotal(), pageInfo.getList());
         return dataGridResult;
     }
 
+    /**
+     * apache poi 实现excel导出用户信息
+     * */
     @Override
-    public Workbook exportUser() {
+    public Workbook exportUserInfo() {
         // 创建工作簿
         Workbook workbook = new HSSFWorkbook();
         // 创建一个sheet
@@ -51,7 +62,7 @@ public class SysUserServiceImpl implements SysUserService {
             cell.setCellValue(titles[i]);
         }
         // 设置每一行的值
-        List<Map<String, Object>> mapList = this.sysUserMapper.exportUser();
+        List<Map<String, Object>> mapList = this.sysUserMapper.exportUserInfo();
         for (int i = 0; i < mapList.size(); i++){
             Row row = sheet.createRow(i + 1);
             // 一个List元素代表一行的数据

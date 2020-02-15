@@ -8,10 +8,12 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.util.List;
 
 public interface SysUserService {
-    DataGridResult selectAllUser(QueryDTO queryDTO);
 
-    // 导出用户
-    Workbook exportUser();
+    /**查询所有用户*/
+    DataGridResult listAllUsers(QueryDTO queryDTO);
+
+    /** excel形式导出用户信息*/
+    Workbook exportUserInfo();
 
     SysUser getUserByName(String username);
 }
