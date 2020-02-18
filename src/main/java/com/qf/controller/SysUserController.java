@@ -35,6 +35,9 @@ public class SysUserController {
         return sysUserService.listAllUsers(queryDTO);
     }
 
+    /**
+     * apache poi 实现excel导出用户信息
+     * */
     @RequestMapping("/sys/user/export")
     public void exportUserInfo(HttpServletResponse response){
         Workbook workbook = this.sysUserService.exportUserInfo();

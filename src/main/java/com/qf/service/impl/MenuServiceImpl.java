@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+/**
+ * 创建者：zhangqi
+ * 修改时间：2020/2/17
+ * */
 @Service
 public class MenuServiceImpl implements MenuService {
     @Autowired
@@ -72,39 +76,46 @@ public class MenuServiceImpl implements MenuService {
         }
     }
 
-    @Override
-    public List<String> listMenuPermsByUserId(Long userId) {
-        List<String> perms = this.sysMenuMapper.listMenuPermsByUserId(userId);
-        Set<String> hashset = new HashSet<>();
-        for (String perm : perms){
-            if (perm != null && !perm.equals("")) {
-                String[] permArr = perm.split(",");
-                for (String x : permArr){
-                    hashset.add(x);
-                }
-            }
-        }
-        List<String> permsList = new ArrayList<>();
-        permsList.addAll(hashset);
-        return permsList;
-    }
-
     /**
      * 查询用户自己的菜单
      * */
     @Override
-    public Map<String, Object> findUserMenus(Long userId) {
+    public Map<String, Object> listUserMenusByUserId(Long userId) {
+        Map<String, Object> menuMap =  new HashMap<>();
         // 根据用户id查询一级目录
-        List<Map<String, Object>> directorys = this.sysMenuMapper.findDirMenuByUserId(userId);
-        for (Map<String, Object> directory : directorys){
-            Long menuId = Long.parseLong(directory.get("menuId") + "");
-            List<Map<String, Object>> menus = this.sysMenuMapper.findMenuNotButtonByUserId(menuId, userId);
-            directory.put("list", menus);
+        List<Map<String, Object>> dirs = this.sysMenuMapper.listDirsByUserId(userId);
+        // 查询一级目录对应的二级菜单
+        Long parentId;
+        List<Map<String, Object>> subMenus;
+        for (Map<String, Object> dir : dirs) {
+            parentId = Long.parseLong(dir.get("menuId") + "");
+            subMenus = this.sysMenuMapper.listSubMenusOfDirs(userId, parentId);
+            dir.put("list", subMenus);
         }
-        Map<String, Object> map = new HashMap<>();
-        List<String> perms = this.sysMenuMapper.listMenuPermsByUserId(userId);
-        map.put("menuList", directorys);
-        map.put("permissions", perms);
-        return map;
+        menuMap.put("menuList", dirs);
+        // 查询用户菜单权限
+        List<String> permsList = listButtonPermsByUserId(userId);
+        menuMap.put("permissions", permsList);
+        return menuMap;
+    }
+
+    /**
+     * 查询用户按钮权限
+     * */
+    @Override
+    public List<String> listButtonPermsByUserId(Long userId) {
+        List<String> perms = this.sysMenuMapper.listButtonPermsByUserId(userId);
+        Set<String> hashSet = new HashSet<>();
+        for (String perm : perms) {
+            if (perm != null && !perm.equals("")) {
+                String[] splits = perm.split(",");
+                for (String split : splits) {
+                    hashSet.add(split);
+                }
+            }
+        }
+        List<String> permsList = new LinkedList<>();
+        permsList.addAll(hashSet);
+        return permsList;
     }
 }

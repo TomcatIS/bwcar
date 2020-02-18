@@ -38,8 +38,8 @@ public class UserRealm extends AuthorizingRealm {
         Long userId = user.getUserId();
         // 查询用户角色
         List<String> roles = this.roleService.listRolesByUserId(userId);
-        // 查询用户权限
-        List<String> perms = this.menuService.listMenuPermsByUserId(userId);
+        // 查询用户按钮权限
+        List<String> perms = this.menuService.listButtonPermsByUserId(userId);
         SimpleAuthorizationInfo simpleAuthorizationInfo = new SimpleAuthorizationInfo();
         simpleAuthorizationInfo.addRoles(roles);
         simpleAuthorizationInfo.addStringPermissions(perms);

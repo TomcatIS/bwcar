@@ -77,7 +77,7 @@ public class MenuController {
     @ResponseBody
     public Map<String, Object> getUserMenus(){
         SysUser user = (SysUser)SecurityUtils.getSubject().getPrincipal();
-        Map<String, Object> userMenus = this.menuService.findUserMenus(user.getUserId());
+        Map<String, Object> userMenus = this.menuService.listUserMenusByUserId(user.getUserId());
         return userMenus;
     }
 }

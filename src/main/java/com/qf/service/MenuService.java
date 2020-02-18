@@ -24,8 +24,9 @@ public interface MenuService {
     // 新增菜单
     R saveMenu(SysMenu sysMenu);
 
-    List<String> listMenuPermsByUserId(Long userId);
+    /**根据用户ID查询用户菜单*/
+    Map<String ,Object> listUserMenusByUserId(Long userId);
 
-    // 查询用户自己的菜单
-    Map<String ,Object> findUserMenus(Long userId);
+    /**查询用户按钮权限*/
+    List<String> listButtonPermsByUserId(Long userId);
 }

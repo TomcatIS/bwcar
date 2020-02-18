@@ -41,11 +41,17 @@ public interface SysMenuMapper {
     // 新增菜单
     int saveMenu(SysMenu sysMenu);
 
-    List<String> listMenuPermsByUserId(@Param("userId")Long userId);
 
-    // 查询一级目录
-    List<Map<String, Object>> findDirMenuByUserId(@Param("userId")Long userId);
 
-    // 查询一级目录对应的菜单
-    List<Map<String, Object>>findMenuNotButtonByUserId(@Param("parentId")Long parentId, @Param("userId")Long userId);
+    /**根据用户ID查询用户一级菜单*/
+    List<Map<String, Object>> listDirsByUserId(@Param("userId")Long userId);
+
+    /**查询一级目录对应的二级菜单*/
+    List<Map<String, Object>> listSubMenusOfDirs(@Param("userId")Long userId, @Param("parentId")Long parentId);
+
+    /**查询用按钮权限*/
+    List<String> listButtonPermsByUserId(@Param("userId")Long userId);
+
+
+
 }
