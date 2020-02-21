@@ -11,6 +11,7 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,7 +22,7 @@ import java.util.Map;
 
 /**
  * description:
- * 菜单显示控制层
+ * "菜单管理"功能控制层
  * @author zhangqi
  * @created 2020/1/5
  * */
@@ -31,36 +32,47 @@ public class MenuController {
     private MenuService menuService;
 
     /**
-     * 显示菜单
+     * 获取用户菜单
+     * */
+    @RequestMapping("/sys/menu/user")
+    @ResponseBody
+    public Map<String, Object> getUserMenus() {
+        SysUser user = (SysUser)SecurityUtils.getSubject().getPrincipal();
+        Map<String, Object> userMenus = this.menuService.listUserMenusByUserId(user.getUserId());
+        return userMenus;
+    }
+
+    /**
+     *”菜单管理”：显示所有菜单信息
      **/
     @MyLog("菜单列表")
     @RequestMapping("/sys/menu/list")
     @ResponseBody
     @RequiresPermissions("sys:menu:list")
-    public DataGridResult findMenu(QueryDTO queryDTO){
-        DataGridResult menu = this.menuService.findMenu(queryDTO);
-        return menu;
+    public DataGridResult listMenusInfo(QueryDTO queryDTO) {
+        DataGridResult dataGridResult = this.menuService.listMenusInfo(queryDTO);
+        return dataGridResult;
     }
+
     /**
-     * 删除菜单
+     * "菜单管理":删除菜单信息
      * */
     @MyLog("菜单删除")
     @RequestMapping("/sys/menu/del")
     @ResponseBody
-    public R deleteMenu(@RequestBody List<Long> ids){
-        return this.menuService.deleteMenu(ids);
+    public R deleteMenusInfo(@RequestBody List<Long> ids) {
+        return this.menuService.deleteMenusInfo(ids);
     }
+
     /**
-     * 新增菜单时，显示树形菜单
+     * “菜单管理”：生成树形菜单
      * */
-    @RequestMapping("/sys/menu/select")
+    @RequestMapping("/sys/menu/generateZtree")
     @ResponseBody
-    public Map findMenu(){
-        List<SysMenu> menuList = this.menuService.selectMenu();
-        HashMap<String, List> map = new HashMap<>();
-        map.put("menuList", menuList);
-        return map;
+    public Map generateZtree(){
+        return this.menuService.generateZtree();
     }
+
     /**
      * 保存新增菜单信息
      * */
@@ -70,14 +82,5 @@ public class MenuController {
         return this.menuService.saveMenu(sysMenu);
     }
 
-    /**
-     * 获取用户菜单
-     * */
-    @RequestMapping("/sys/menu/user")
-    @ResponseBody
-    public Map<String, Object> getUserMenus(){
-        SysUser user = (SysUser)SecurityUtils.getSubject().getPrincipal();
-        Map<String, Object> userMenus = this.menuService.listUserMenusByUserId(user.getUserId());
-        return userMenus;
-    }
+
 }

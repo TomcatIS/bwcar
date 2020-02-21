@@ -77,6 +77,63 @@
 	    a.user_id=#{userId}
   </select>
 
+  <!--“菜单管理”:显示菜单信息-->
+  <select id="listMenusInfo" parameterType="com.qf.dto.QueryDTO" resultMap="BaseResultMap">
+    select
+        a.menu_id,
+        a.parent_id,
+        a.name,
+        b.name parentName,
+        a.url,
+        a.perms,
+        a.type,
+        a.icon,
+        a.order_num
+    from
+        sys_menu a
+    inner join
+        sys_menu b
+    on
+        a.parent_id=b.menu_id
+    <where>
+      <if test="search != null and search != ''">
+        and a.name like "%"#{search}"%"
+      </if>
+      <if test="sort != null and sort != ''">
+        and order by a.${sort} ${order}
+      </if>
+    </where>
+  </select>
+
+  <!--“菜单管理”:删除菜单信息-->
+  <delete id="deleteMenusInfo" parameterType="java.util.List">
+    delete from 
+        sys_menu
+    where 
+        menu_id in 
+    <foreach collection="ids" open="(" close=")" separator="," item="id">
+      #{id}
+    </foreach>
+  </delete>
+
+  <!--“菜单管理”：生成树形菜单-->
+  <select id="generateZtree" resultMap="BaseResultMap">
+    select
+        menu_id,
+        parent_id,
+        name,
+        url,
+        perms,
+        type,
+        icon,
+        order_num
+    from
+        sys_menu
+    where
+        type != 2
+  </select>
+
+
   <sql id="Example_Where_Clause" >
     <where >
       <foreach collection="oredCriteria" item="criteria" separator="or" >
@@ -346,21 +403,9 @@
         </where>
     </select>
 
-  <!--删除菜单-->
-  <delete id="deleteMenu" parameterType="java.util.List">
-    delete from
-      sys_menu
-    where
-      menu_id in
-      <foreach collection="list" open="(" close=")" separator="," item="id">
-        #{id}
-      </foreach>
-  </delete>
+  
 
-  <!--显示新增树形菜单-->
-  <select id="findMenu" resultMap="BaseResultMap">
-    select * from sys_menu where type!=2
-  </select>
+
 
   <!--保存新增菜单信息-->
   <insert id="saveMenu" parameterType="com.qf.pojo.SysMenu">

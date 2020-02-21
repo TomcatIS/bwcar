@@ -1,31 +1,21 @@
 package com.qf.dto;
 /**
  * description:
- * 封装显示菜单管理页面时向后端传递的数据
+ * 封装分页查询，模糊查询字段
  * @author zhangqi
  * @created 2019/1/3
  * */
 public class QueryDTO {
+    /**每页条数*/
     private Integer limit;
-    // 排序方式：升序，降序
+    /**排序方式：升序，降序*/
     private String order;
-    // 每页的起始位置
+    /**每页的起始位置*/
     private Integer offset;
-    // 排序字段
+    /**排序字段*/
     private String sort;
-    // 搜索的内容
+    /**搜索的内容*/
     private String search;
-
-    @Override
-    public String toString() {
-        return "QueryDTO{" +
-                "limit=" + limit +
-                ", order='" + order + '\'' +
-                ", offset=" + offset +
-                ", sort='" + sort + '\'' +
-                ", search='" + search + '\'' +
-                '}';
-    }
 
     public Integer getLimit() {
         return limit;
@@ -65,5 +55,16 @@ public class QueryDTO {
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    @Override
+    public String toString() {
+        return "QueryDTO{" +
+                "limit=" + limit +
+                ", order='" + order + '\'' +
+                ", offset=" + offset +
+                ", sort='" + sort + '\'' +
+                ", search='" + search + '\'' +
+                '}';
     }
 }

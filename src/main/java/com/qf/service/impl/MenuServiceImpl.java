@@ -23,58 +23,6 @@ import java.util.*;
 public class MenuServiceImpl implements MenuService {
     @Autowired
     private SysMenuMapper sysMenuMapper;
-    
-    @Override
-    public DataGridResult findMenu(QueryDTO queryDTO) {
-        PageHelper.offsetPage(queryDTO.getOffset(), queryDTO.getLimit());
-        if (queryDTO.getSort() != null && !queryDTO.getSort().equals("")){
-            queryDTO.setSort("menu_id");
-        }
-        List<SysMenu> menuByPage = this.sysMenuMapper.findMenuByPage(queryDTO);
-        PageInfo<SysMenu> pageInfo = new PageInfo<SysMenu>(menuByPage);
-        long total = pageInfo.getTotal();
-        // pageInfo.getList()因该是返回一页的数据，但打印出来没看到封装的信息
-        DataGridResult dataGridResult = new DataGridResult(total, pageInfo.getList());
-        return dataGridResult;
-    }
-
-    @Transactional(propagation = Propagation.REQUIRED)
-    @Override
-    public R deleteMenu(List<Long> ids) {
-        for (Long x : ids){
-            if (x < 51){
-                return R.error("删除失败：不能删除系统菜单");
-            }
-        }
-        int i = this.sysMenuMapper.deleteMenu(ids);
-        if (i > 0){
-            return R.ok("删除成功");
-        }else {
-            return R.error("未知原因，删除失败");
-        }
-    }
-
-    @Override
-    public List<SysMenu> selectMenu() {
-        List<SysMenu> menuList = this.sysMenuMapper.findMenu();
-        SysMenu sysMenu = new SysMenu();
-        sysMenu.setName("一级菜单");
-        sysMenu.setParentId(-1L);
-        sysMenu.setMenuId(0L);
-        sysMenu.setType(0);
-        menuList.add(sysMenu);
-        return menuList;
-    }
-    @Transactional(propagation = Propagation.REQUIRED)
-    @Override
-    public R saveMenu(SysMenu sysMenu) {
-        int i = this.sysMenuMapper.saveMenu(sysMenu);
-        if (i > 0){
-            return R.ok("添加成功");
-        }else{
-            return R.error("添加失败");
-        }
-    }
 
     /**
      * 查询用户自己的菜单
@@ -118,4 +66,73 @@ public class MenuServiceImpl implements MenuService {
         permsList.addAll(hashSet);
         return permsList;
     }
+
+    /**
+     * 菜单管理":显示菜单信息
+     * */
+    @Override
+    public DataGridResult listMenusInfo(QueryDTO queryDTO) {
+        PageHelper.startPage(queryDTO.getOffset(), queryDTO.getLimit());
+        if (queryDTO.getSort() != null && !queryDTO.getSort().equals("")) {
+            queryDTO.setSort("menu_id");
+        }
+        List<SysMenu> menusInfo = this.sysMenuMapper.listMenusInfo(queryDTO);
+        PageInfo<SysMenu> pageInfo = new PageInfo<>(menusInfo);
+        DataGridResult dataGridResult = new DataGridResult(pageInfo.getTotal(), pageInfo.getList());
+        return dataGridResult;
+    }
+
+    /**
+     *“菜单管理”：删除菜单信息
+     **/
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public R deleteMenusInfo(List<Long> ids) {
+        for (Long id : ids){
+            if (id < 51){
+                return R.error("删除失败：不能删除系统菜单");
+            }
+        }
+        int i = this.sysMenuMapper.deleteMenusInfo(ids);
+        if (i > 0){
+            return R.ok("删除成功");
+        }else {
+            return R.error("未知原因，删除失败");
+        }
+    }
+
+    /**
+     * “菜单管理”：生成树形菜单
+     * */
+    @Override
+    public Map generateZtree() {
+        List<SysMenu> sysMenus = this.sysMenuMapper.generateZtree();
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("menuList", sysMenus);
+        return map;
+    }
+
+    @Override
+    public List<SysMenu> selectMenu() {
+        List<SysMenu> menuList = this.sysMenuMapper.findMenu();
+        SysMenu sysMenu = new SysMenu();
+        sysMenu.setName("一级菜单");
+        sysMenu.setParentId(-1L);
+        sysMenu.setMenuId(0L);
+        sysMenu.setType(0);
+        menuList.add(sysMenu);
+        return menuList;
+    }
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public R saveMenu(SysMenu sysMenu) {
+        int i = this.sysMenuMapper.saveMenu(sysMenu);
+        if (i > 0){
+            return R.ok("添加成功");
+        }else{
+            return R.error("添加失败");
+        }
+    }
+
+
 }

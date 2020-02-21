@@ -31,13 +31,8 @@ public interface SysMenuMapper {
 
     int updateByPrimaryKey(SysMenu record);
 
-    List<SysMenu> findMenuByPage(QueryDTO queryDTO);
-
-    // 删除菜单
-    int deleteMenu(List<Long> ids);
 
     List<SysMenu> findMenu();
-
     // 新增菜单
     int saveMenu(SysMenu sysMenu);
 
@@ -52,6 +47,13 @@ public interface SysMenuMapper {
     /**查询用按钮权限*/
     List<String> listButtonPermsByUserId(@Param("userId")Long userId);
 
+    /**“菜单管理”:显示菜单信息*/
+    List<SysMenu> listMenusInfo(QueryDTO queryDTO);
 
+    /**“菜单管理”:删除菜单信息*/
+    int deleteMenusInfo(List<Long> ids);
+
+    /**“菜单管理”：生成树形菜单*/
+    List<SysMenu> generateZtree();
 
 }

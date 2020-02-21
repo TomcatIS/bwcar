@@ -1,5 +1,5 @@
 $(function(){
-    var option = {
+    let option = {
         url: '/sys/menu/list',
         pagination: true,	//显示分页条
         sidePagination: 'server',//服务器端分页
@@ -14,9 +14,14 @@ $(function(){
                 field: 'menuId',
                 title: '序号',
                 width: 40,
+                /*formatter这个属性属于列参数，意思就是对当前列的数据进行格式化操作，它是一个函数，有三个参数，value，row，index,
+                value:代表当前单元格中的值，
+                row：代表当前行,
+                index:代表当前行的下标,*/
                 formatter: function(value, row, index) {
-                    var pageSize = $('#table').bootstrapTable('getOptions').pageSize;
-                    var pageNumber = $('#table').bootstrapTable('getOptions').pageNumber;
+                    let pageSize = $('#table').bootstrapTable('getOptions').pageSize;
+                    let pageNumber = $('#table').bootstrapTable('getOptions').pageNumber;
+                    // 计算每个单元格的menuId的值
                     return pageSize * (pageNumber - 1) + index + 1;
                 }
             },
@@ -54,19 +59,18 @@ $(function(){
         ]};
     $('#table').bootstrapTable(option);
 });
-var ztree;
+let ztree;
 
-var vm = new Vue({
+let vm = new Vue({
 	el:'#dtapp',
     data:{
         showList: true,
         title: null,
         menu:{}
     },
-
     methods:{
         del: function(){
-            var rows = getSelectedRows();
+            let rows = getSelectedRows();
             if (rows == null){
                 layer.alert("请至少选择一行数据");
                 return;
@@ -74,7 +78,7 @@ var vm = new Vue({
             layer.confirm("确定删除所选数据吗？", {
                 btn: ['确定', '取消'],
                 btn1: function(index, layero){
-                    var ids = new Array();
+                    let ids = new Array();
                     $.each(rows, function(index, row){
                         ids[index] = row.menuId;
                     });
@@ -101,19 +105,14 @@ var vm = new Vue({
             vm.getMenu();
         },
         update: function (event) {
-            var id = 'menuId';
-            var menuId = getSelectedRow()[id];
-            if(menuId == null){
-                return ;
-            }
-
-            $.get("../sys/menu/info/"+menuId, function(r){
-                vm.showList = false;
-                vm.title = "修改";
-                vm.menu = r.menu;
-
-                vm.getMenu();
-            });
+            let id = "menuId"
+            let row = getSelectedRow();
+            let menuId = row[id];
+            vm.showList = false;
+            vm.title = "修改";
+            vm.menu = row;
+            // 获取树形菜单
+            vm.getMenu(menuId);
         },
         saveOrUpdate: function (event) {
             $.ajax({
@@ -148,18 +147,16 @@ var vm = new Vue({
                 content: jQuery("#menuLayer"),
                 btn: ['确定', '取消'],
                 btn1: function (index) {
-                    var node = ztree.getSelectedNodes();
+                    let node = ztree.getSelectedNodes();
                     //选择上级菜单
                     vm.menu.parentId = node[0].menuId;
                     vm.menu.parentName = node[0].name;
-
                     layer.close(index);
                 }
             });
         },
         getMenu: function(menuId){
-
-            var setting = {
+            let setting = {
                 data: {
                     simpleData: {
                         enable: true,
@@ -173,12 +170,12 @@ var vm = new Vue({
                 }
             };
 
-            //加载菜单树
-            $.get("../sys/menu/select", function(r){
-                //生成ztree树
+            // 加载菜单树
+            $.get("/sys/menu/generateZtree", function(r){
+                // 生成ztree树
                 ztree = $.fn.zTree.init($("#menuTree"), setting, r.menuList);
                 // 表示根据menuId获取节点，获取menuId=vm.menu.parentId的节点
-                var node = ztree.getNodeByParam("menuId", vm.menu.parentId);
+                let node = ztree.getNodeByParam("menuId", vm.menu.parentId);
                 // 表示点击新增按钮后，默认选中下面这个节点
                 ztree.selectNode(node);
                 // 表示默认parentName为node.name("一级菜单")
