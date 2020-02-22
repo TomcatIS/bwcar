@@ -107,32 +107,43 @@ public class MenuServiceImpl implements MenuService {
     @Override
     public Map generateZtree() {
         List<SysMenu> sysMenus = this.sysMenuMapper.generateZtree();
-        Map<String, Object> map = new HashMap<>(2);
-        map.put("menuList", sysMenus);
-        return map;
-    }
-
-    @Override
-    public List<SysMenu> selectMenu() {
-        List<SysMenu> menuList = this.sysMenuMapper.findMenu();
         SysMenu sysMenu = new SysMenu();
         sysMenu.setName("一级菜单");
         sysMenu.setParentId(-1L);
         sysMenu.setMenuId(0L);
         sysMenu.setType(0);
-        menuList.add(sysMenu);
-        return menuList;
+        sysMenus.add(sysMenu);
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("menuList", sysMenus);
+        return map;
     }
+
+    /**
+     * “菜单管理”：新增菜单信息
+     * */
     @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public R saveMenu(SysMenu sysMenu) {
-        int i = this.sysMenuMapper.saveMenu(sysMenu);
+    public R addMenuInfo(SysMenu sysMenu) {
+        int i = this.sysMenuMapper.addMenuInfo(sysMenu);
         if (i > 0){
             return R.ok("添加成功");
-        }else{
+        } else {
             return R.error("添加失败");
         }
     }
 
+    /**
+     * “菜单管理”：修改菜单信息
+     * */
+    @Transactional(propagation = Propagation.REQUIRED)
+    @Override
+    public R updateMenuInfo(SysMenu sysMenu) {
+        int i = this.sysMenuMapper.updateMenuInfo(sysMenu);
+        if (i > 0) {
+            return R.ok("修改成功");
+        } else {
+            return R.error("修改失败");
+        }
+    }
 
 }

@@ -34,10 +34,10 @@ public interface SysUserMapper {
 
     int updateByPrimaryKey(SysUser record);
 
-    /**查询所有用户*/
+    /**“用户管理”：查询所有用户*/
     List<SysUser> listAllUsers(QueryDTO queryDTO);
 
-    /** apache poi 实现excel导出用户信息*/
+    /** “用户管理”：excel导出用户信息*/
     List<Map<String, Object>> exportUserInfo();
 
     SysUser getUserByName(String username);

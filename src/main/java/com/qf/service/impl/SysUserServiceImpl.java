@@ -30,7 +30,7 @@ public class SysUserServiceImpl implements SysUserService {
     private SysUserMapper sysUserMapper;
 
     /**
-     * 查询所有用户
+     * “用户管理”：查询所有用户
      * */
     @Override
     public DataGridResult listAllUsers(QueryDTO queryDTO) {
@@ -42,7 +42,7 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     /**
-     * apache poi 实现excel导出用户信息
+     * “用户管理”：excel导出用户信息
      * */
     @Override
     public Workbook exportUserInfo() {

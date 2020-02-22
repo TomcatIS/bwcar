@@ -74,13 +74,21 @@ public class MenuController {
     }
 
     /**
-     * 保存新增菜单信息
+     * “菜单管理”：新增菜单信息
      * */
-    @RequestMapping("/sys/menu/save")
+    @RequestMapping("/sys/menu/add")
     @ResponseBody
-    public R saveMenu(@RequestBody SysMenu sysMenu){
-        return this.menuService.saveMenu(sysMenu);
+    public R addMenuInfo(@RequestBody SysMenu sysMenu){
+        return this.menuService.addMenuInfo(sysMenu);
     }
 
+    /**
+     * “菜单管理”：修改菜单信息
+     * */
+    @RequestMapping("/sys/menu/update")
+    @ResponseBody
+    public R updateMenuInfo(@RequestBody SysMenu sysMenu){
+        return this.menuService.updateMenuInfo(sysMenu);
+    }
 
 }

@@ -15,7 +15,8 @@ import java.lang.reflect.Method;
 import java.util.Date;
 
 /**
- * aop实现日志开发
+ * aop实现日志记录
+ * @author zhangqi
  * 创建时间：2020/2/13
  * */
 @Aspect
@@ -28,21 +29,22 @@ public class MyLogAdvice {
      * */
     @Pointcut("@annotation(com.qf.log.MyLog)")
     public void myPointCut() {
-
     }
+
     /**
      * 定义后置通知
      **/
     @AfterReturning(pointcut = "myPointCut()")
     public void myAfterAdvice(JoinPoint joinPoint) {
-        // 通过反射的方式拿到方法的名称
+        // 获取方法签名
         MethodSignature signature = (MethodSignature)joinPoint.getSignature();
+        // 获取方法名称
         Method method = signature.getMethod();
-        // 得到MyLog注解
+        // 获取@MyLog注解
         MyLog annotation = method.getAnnotation(MyLog.class);
         String operation = null;
         if (annotation != null) {
-            // 获取用户的操作，value()是自己定义在MyLog当中的
+            // 获取用户的操作
             operation = annotation.value();
         }
         // 获取用户ip

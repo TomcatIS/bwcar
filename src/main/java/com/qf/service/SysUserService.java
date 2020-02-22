@@ -9,10 +9,10 @@ import java.util.List;
 
 public interface SysUserService {
 
-    /**查询所有用户*/
+    /** “用户管理”：查询所有用户 */
     DataGridResult listAllUsers(QueryDTO queryDTO);
 
-    /** excel形式导出用户信息*/
+    /** “用户管理”：excel形式导出用户信息 */
     Workbook exportUserInfo();
 
     SysUser getUserByName(String username);

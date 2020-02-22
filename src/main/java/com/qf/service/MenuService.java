@@ -16,22 +16,25 @@ import java.util.Map;
  * */
 public interface MenuService {
 
-    /**根据用户ID查询用户菜单*/
+    /** 根据用户ID查询用户菜单 */
     Map<String ,Object> listUserMenusByUserId(Long userId);
 
-    /**查询用户按钮权限*/
+    /** 查询用户按钮权限 */
     List<String> listButtonPermsByUserId(Long userId);
 
-    /**"菜单管理":显示菜单信息*/
+    /** “菜单管理”:显示菜单信息 */
     DataGridResult listMenusInfo(QueryDTO queryDTO);
 
-    /**"菜单管理":删除菜单信息*/
+    /** “菜单管理”:删除菜单信息 */
     R deleteMenusInfo(List<Long> ids);
 
-    /**“菜单管理”：生成树形菜单*/
+    /**“菜单管理”：生成树形菜单 */
     Map generateZtree();
-    
-    R saveMenu(SysMenu sysMenu);
 
+    /**“菜单管理”：新增菜单信息 */
+    R addMenuInfo(SysMenu sysMenu);
+
+    /**“菜单管理”：修改菜单信息 */
+    R updateMenuInfo(SysMenu sysMenu);
 
 }
