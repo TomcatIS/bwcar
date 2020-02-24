@@ -18,7 +18,7 @@ public class SysUser implements Serializable {
 
     private Long createUserId;
 
-    private Date createTime;
+    private String createTime;
 
     private static final long serialVersionUID = 1L;
 
@@ -78,11 +78,11 @@ public class SysUser implements Serializable {
         this.createUserId = createUserId;
     }
 
-    public Date getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 }

@@ -45,7 +45,7 @@ public class MenuController {
     /**
      *”菜单管理”：显示所有菜单信息
      **/
-    @MyLog("菜单列表")
+    @MyLog("显示所有菜单信息")
     @RequestMapping("/sys/menu/list")
     @ResponseBody
     @RequiresPermissions("sys:menu:list")
@@ -57,7 +57,7 @@ public class MenuController {
     /**
      * "菜单管理":删除菜单信息
      * */
-    @MyLog("菜单删除")
+    @MyLog("删除菜单信息")
     @RequestMapping("/sys/menu/del")
     @ResponseBody
     public R deleteMenusInfo(@RequestBody List<Long> ids) {
@@ -76,6 +76,7 @@ public class MenuController {
     /**
      * “菜单管理”：新增菜单信息
      * */
+    @MyLog("新增菜单信息")
     @RequestMapping("/sys/menu/add")
     @ResponseBody
     public R addMenuInfo(@RequestBody SysMenu sysMenu){
@@ -85,6 +86,7 @@ public class MenuController {
     /**
      * “菜单管理”：修改菜单信息
      * */
+    @MyLog("修改菜单信息")
     @RequestMapping("/sys/menu/update")
     @ResponseBody
     public R updateMenuInfo(@RequestBody SysMenu sysMenu){

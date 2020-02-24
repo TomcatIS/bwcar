@@ -9,7 +9,17 @@ $(function(){
             toolbar: '#toolbar',
             columns:[
                 {field:'ck',checkbox:true},
-                {field:'userId',title:'编号',sortable:true},
+                {
+                    field:'userId',
+                    title:'编号',
+                    formatter: function(value, row, index) {
+                        let pageSize = $('#table').bootstrapTable('getOptions').pageSize;
+                        let pageNumber = $('#table').bootstrapTable('getOptions').pageNumber;
+                        return pageSize * (pageNumber - 1) + index + 1;
+                    },
+                    sortable:true
+
+                },
                 {field:'username',title:'用户名'},
                 {field:'password',title:'密码',formatter:function(v,r,index){
                     return "******";
@@ -30,7 +40,7 @@ $(function(){
 
 });
 
-var vm  = new Vue({
+let vm  = new Vue({
     el:'#dtapp',
     data:{
         showList:true,
@@ -44,7 +54,7 @@ var vm  = new Vue({
             if(rows == null){
                 return ;
             }
-            var id = 'userId';
+            let id = 'userId';
             //提示确认框
             layer.confirm('您确定要删除所选数据吗？', {
                 btn: ['确定', '取消'] //可以无限个按钮
@@ -61,12 +71,12 @@ var vm  = new Vue({
                     url: "/sys/user/del",
                     data: JSON.stringify(ids),//把json数组转json字符串
                     success : function(r) {
-                        if(r.code === 0){//成功
+                        if(r.code === 200){//成功
 
-                            layer.alert('删除成功');
+                            layer.alert(r.msg);
                             //刷新
                             $('#table').bootstrapTable('refresh');
-                        }else{
+                        } else {
                             layer.alert(r.msg);
                         }
                     },
@@ -79,33 +89,23 @@ var vm  = new Vue({
         add: function(){
             vm.showList = false;
             vm.title = "新增";
-
-
         },
         update: function (event) {
-            var id = 'userId';
-            var userId = getSelectedRow()[id];
-            if(userId == null){
-                return ;
-            }
-
-            $.get("../sys/user/info/"+userId, function(r){
-                vm.showList = false;
-                vm.title = "修改";
-
-            });
+            let row = getSelectedRow();
+            vm.user = row;
+            vm.showList = false;
+            vm.title = "修改";
         },
         saveOrUpdate: function (event) {
-            //有菜单编号时是修改，没有：新增
-
-            var url = vm.user.userId == null ? "../sys/user/save" : "../sys/user/update";
+            // 有菜单编号时是修改，没有：新增
+            let url = vm.user.userId == null ? "/sys/user/add" : "/sys/user/update";
             $.ajax({
                 type: "POST",
                 url: url,
                 data: JSON.stringify(vm.user),//json字符串
                 success: function(r){
-                    if(r.code === 0){
-                        layer.alert('操作成功', function(index){
+                    if(r.code === 200){
+                        layer.alert(r.msg, function(index){
                             layer.close(index);
                             vm.reload();
                         });

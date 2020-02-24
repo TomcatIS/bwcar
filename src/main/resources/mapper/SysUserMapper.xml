@@ -17,7 +17,7 @@
     user_id, username, password, email, mobile, status, create_user_id, create_time
   </sql>
 
-  <!--查询所有用户-->
+  <!--“用户管理”：显示所有用户信息-->
   <select id="listAllUsers" resultMap="BaseResultMap" parameterType="com.qf.dto.QueryDTO">
     select
         <include refid="Base_Column_List"/>
@@ -25,15 +25,62 @@
         sys_user
     <where>
       <if test="search != null and search != ''">
-        and username like "%"#{search}"%"
-      </if>
-      <if test="sort != null and sort != ''">
-        and order by ${sort} ${order}
+        and username like concat('%',#{search},'%')
       </if>
     </where>
+      <if test="sort != null and sort != ''">
+        order by ${sort} ${order}
+      </if>
   </select>
 
-  <!--导出用户信息-->
+  <!--“用户管理”：删除用户-->
+  <delete id="deleteUsers" parameterType="java.util.List">
+    delete from
+        sys_user
+    where
+        user_id in
+    <foreach collection="list" open="(" close=")" item="id">
+      #{id}
+    </foreach>
+  </delete>
+
+  <!--“用户管理”：添加用户-->
+  <insert id="addUser" parameterType="com.qf.pojo.SysUser">
+    insert into
+        sys_user(
+                username,
+                password,
+                email,
+                mobile,
+                status,
+                create_user_id,
+                create_time
+                )
+        values(
+                #{username},
+                #{password},
+                #{email},
+                #{mobile},
+                #{status},
+                #{createUserId},
+                #{createTime}
+                )
+  </insert>
+
+  <!--“用户管理”：修改用户信息-->
+  <update id="updateUserInfo" parameterType="com.qf.pojo.SysUser">
+    update
+        sys_user
+    set
+        username=#{username},
+        password=#{password},
+        email=#{email},
+        mobile=#{mobile}
+    where
+        user_id=#{userId}
+  </update>
+
+  <!--“用户管理”：excel导出用户信息-->
   <select id="exportUserInfo" resultType="java.util.Map">
     select
         user_id as userId,

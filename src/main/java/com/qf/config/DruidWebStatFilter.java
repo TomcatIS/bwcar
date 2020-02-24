@@ -6,19 +6,12 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 
 /**
- * <filter>
- *     <filter-name></filter-name>
- *     <filter-class></filter-class>
- *     <init-param>
- *         <param-name></param-name>
- *         <param-value></param-value>
- *     </init-param>
- * </filter>
- */
-@WebFilter(filterName = "druidWebStatFilter",urlPatterns = "/*",
-initParams = {@WebInitParam(name = "exclusions",value = "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*")})
-//exclusions 不拦截资源
+ * sql监控过滤器
+ * @author zhangqi
+ *  创建时间：2020/2/13
+ * */
+@WebFilter(filterName = "druidWebStatFilter", urlPatterns = "/*",
+initParams = {@WebInitParam(name = "exclusions", value = "*.js,*.gif,*.jpg,*.bmp,*.png,*.css,*.ico,/druid/*")})
 public class DruidWebStatFilter extends WebStatFilter {
-
-
 }
+

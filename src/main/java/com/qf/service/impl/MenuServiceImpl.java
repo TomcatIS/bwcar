@@ -72,7 +72,7 @@ public class MenuServiceImpl implements MenuService {
      * */
     @Override
     public DataGridResult listMenusInfo(QueryDTO queryDTO) {
-        PageHelper.startPage(queryDTO.getOffset(), queryDTO.getLimit());
+        PageHelper.offsetPage(queryDTO.getOffset(), queryDTO.getLimit());
         if (queryDTO.getSort() != null && !queryDTO.getSort().equals("")) {
             queryDTO.setSort("menu_id");
         }

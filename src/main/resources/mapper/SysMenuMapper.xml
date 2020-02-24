@@ -91,18 +91,18 @@
         a.order_num
     from
         sys_menu a
-    inner join
+    left join
         sys_menu b
     on
         a.parent_id=b.menu_id
     <where>
-      <if test="search != null and search != ''">
-        and a.name like "%"#{search}"%"
-      </if>
-      <if test="sort != null and sort != ''">
-        and order by a.${sort} ${order}
+      <if test="search != null and search != '' ">
+        and a.name like concat('%',#{search},'%')
       </if>
     </where>
+      <if test="sort != null and sort != '' ">
+          order by a.${sort} ${order}
+      </if>
   </select>
 
   <!--“菜单管理”:删除菜单信息-->
@@ -110,10 +110,10 @@
     delete from 
         sys_menu
     where 
-        menu_id in 
-    <foreach collection="ids" open="(" close=")" separator="," item="id">
-      #{id}
-    </foreach>
+        menu_id in
+      <foreach collection="list" open="(" close=")" separator="," item="id">
+          #{id}
+      </foreach>
   </delete>
 
   <!--“菜单管理”：生成树形菜单-->
@@ -167,7 +167,7 @@
         perms = #{perms},
         type = #{type},
         icon = #{icon},
-        order_num = #{order_num}
+        order_num = #{orderNum}
     where
         menu_id = #{menuId}
   </update>

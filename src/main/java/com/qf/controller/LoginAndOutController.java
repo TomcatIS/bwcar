@@ -26,7 +26,7 @@ import java.util.Map;
  * 生成验证码
  * */
 @Controller
-public class UserController {
+public class LoginAndOutController {
     @Autowired
     private DefaultKaptcha defaultKaptcha;
 

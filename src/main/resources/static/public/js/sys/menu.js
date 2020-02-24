@@ -105,9 +105,9 @@ let vm = new Vue({
             vm.getMenu();
         },
         update: function (event) {
-            let id = "menuId"
+            // let id = "menuId"
             let row = getSelectedRow();
-            let menuId = row[id];
+            let menuId = row.menuId;
             vm.showList = false;
             vm.title = "修改";
             vm.menu = row;
@@ -116,7 +116,8 @@ let vm = new Vue({
         },
         saveOrUpdate: function (event) {
             let url = vm.menu.menuId == null ? "/sys/menu/add" : "/sys/menu/update";
-            $.ajax({
+            $.ajax
+            ({
                 type: 'POST',
                 url: url,
                 data: JSON.stringify(vm.menu),
