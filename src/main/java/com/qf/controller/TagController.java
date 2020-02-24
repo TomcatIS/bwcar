@@ -15,8 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 /**
- * 标签控制层
+ * “标签管理”控制层
  * 创建时间：2020/2/13
+ * 创建者：zhangqi
  * */
 
 @Controller
@@ -24,56 +25,39 @@ public class TagController {
     @Autowired
     private TagService tagService;
 
+    /**
+     * “标签管理”：显示所有标签信息
+     * */
+    @ResponseBody
     @RequestMapping("/sys/tag/list")
-    @ResponseBody
-    public DataGridResult getTag(QueryDTO queryDTO) {
-        return this.tagService.getByPage(queryDTO);
+    public DataGridResult listTags(QueryDTO queryDTO) {
+        return this.tagService.listTags(queryDTO);
     }
 
+    /**
+     * “标签管理”：删除标签信息
+     * */
+    @ResponseBody
     @RequestMapping("/sys/tag/del")
-    @ResponseBody
-    public R delTagById(@RequestBody List<Integer> ids) {
-        int delNum = 0;
-        for (Integer x : ids) {
-            delNum = this.tagService.delTag(x);
-        }
-        if (delNum != 0) {
-            return R.ok("删除成功");
-        }else {
-            return R.error("删除失败");
-        }
+    public R deleteTags(@RequestBody List<Long> ids) {
+        return this.tagService.deleteTags(ids);
     }
 
-    @RequestMapping("/sys/tag/save")
+    /**
+     * “标签管理”：新增标签
+     * */
     @ResponseBody
-    public R saveTag(@RequestBody Tag tag) {
-        int i = this.tagService.addTag(tag);
-        if (i != 0) {
-            return R.ok("添加成功");
-        }else {
-            return R.error("添加失败");
-        }
+    @RequestMapping("/sys/tag/add")
+    public R addTag(@RequestBody Tag tag) {
+        return this.tagService.addTag(tag);
     }
 
-    @RequestMapping("/sys/tag/info/{id}")
+    /**
+     * “标签管理”：修改标签
+     * */
     @ResponseBody
-    public R getTagById(@PathVariable("id") Integer id){
-        Tag tag = this.tagService.getTagById(id);
-        if (tag != null) {
-            return R.ok().put("tag", tag);
-        }else {
-            return R.error();
-        }
-    }
-
     @RequestMapping("/sys/tag/update")
-    @ResponseBody
     public R updateTag(@RequestBody Tag tag) {
-        int i = this.tagService.updateTag(tag);
-        if (i != 0) {
-            return R.ok("更新成功");
-        }else {
-            return R.error("更新失败");
-        }
+        return this.tagService.updateTag(tag);
     }
 }

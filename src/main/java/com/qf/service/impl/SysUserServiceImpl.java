@@ -17,6 +17,8 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,6 +53,7 @@ public class SysUserServiceImpl implements SysUserService {
     /**
      * “用户管理”：删除用户
      * */
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public R deleteUsers(List<Long> ids) {
         for (Long id : ids) {
@@ -69,6 +72,7 @@ public class SysUserServiceImpl implements SysUserService {
     /**
      * “用户管理”：添加用户
      * */
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public R addUser(SysUser sysUser) {
         String password = sysUser.getPassword();
@@ -95,6 +99,7 @@ public class SysUserServiceImpl implements SysUserService {
     /**
      * “用户管理”：修改用户信息
      * */
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
     public R updateUserInfo(SysUser sysUser) {
         int i = this.sysUserMapper.updateUserInfo(sysUser);
@@ -141,6 +146,9 @@ public class SysUserServiceImpl implements SysUserService {
         return workbook;
     }
 
+    /**
+     * shiro认证用户：获取用户信息
+     * */
     @Override
     public SysUser getUserByName(String username) {
         return this.sysUserMapper.getUserByName(username);

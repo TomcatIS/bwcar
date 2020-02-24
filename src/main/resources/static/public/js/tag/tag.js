@@ -1,6 +1,6 @@
 $(function(){
-    var option = {
-        url: '../sys/tag/list',
+    let option = {
+        url: '/sys/tag/list',
         pagination: true,	//显示分页条
         sidePagination: 'server',//服务器端分页
         showRefresh: true,  //显示刷新按钮
@@ -14,10 +14,11 @@ $(function(){
                 title: '序号',
                 width: 40,
                 formatter: function(value, row, index) {
-                    var pageSize = $('#table').bootstrapTable('getOptions').pageSize;
-                    var pageNumber = $('#table').bootstrapTable('getOptions').pageNumber;
+                    let pageSize = $('#table').bootstrapTable('getOptions').pageSize;
+                    let pageNumber = $('#table').bootstrapTable('getOptions').pageNumber;
                     return pageSize * (pageNumber - 1) + index + 1;
-                }
+                },
+                sortable: true
             },
             {checkbox:true},
             { title: 'TagID', field: 'id',sortable:true},
@@ -27,7 +28,7 @@ $(function(){
     $('#table').bootstrapTable(option);
 });
 
-var vm = new Vue({
+let vm = new Vue({
 	el:'#dtapp',
     data:{
         showList: true,
@@ -36,16 +37,17 @@ var vm = new Vue({
     },
     methods:{
         del: function(){
-            var rows = getSelectedRows();
+            let rows = getSelectedRows();
             if(rows == null){
+                layer.alert("请至少选择一条数据");
                 return ;
             }
-            var id = 'id';
+            let id = 'id';
             //提示确认框
             layer.confirm('您确定要删除所选数据吗？', {
                 btn: ['确定', '取消'] //可以无限个按钮
             }, function(index, layero){
-                var ids = new Array();
+                let ids = new Array();
                 //遍历所有选择的行数据，取每条数据对应的ID
                 $.each(rows, function(i, row) {
                     ids[i] = row[id];
@@ -56,8 +58,8 @@ var vm = new Vue({
                     url: "/sys/tag/del",
                     data: JSON.stringify(ids),
                     success : function(r) {
-                        if(r.code === 0){
-                            layer.alert('删除成功');
+                        if(r.code === 200){
+                            layer.alert(r.msg);
                             $('#table').bootstrapTable('refresh');
                         }else{
                             layer.alert(r.msg);
@@ -72,30 +74,22 @@ var vm = new Vue({
         add: function(){
             vm.showList = false;
             vm.title = "新增";
-            vm.tag = {parentName:null,parentId:0,type:1,orderNum:0};
         },
         update: function (event) {
-            var id = 'id';
-            var id = getSelectedRow()[id];
-            if(id == null){
-                return ;
-            }
-
-            $.get("../sys/tag/info/"+id, function(r){
-                vm.showList = false;
-                vm.title = "修改";
-                vm.tag = r.tag;
-            });
+            let row = getSelectedRow();
+            vm.showList = false;
+            vm.title = "修改";
+            vm.tag = row;
         },
         saveOrUpdate: function (event) {
-            var url = vm.tag.id == null ? "../sys/tag/save" : "../sys/tag/update";
+            let url = vm.tag.id == null ? "/sys/tag/add" : "/sys/tag/update";
             $.ajax({
                 type: "POST",
                 url: url,
                 data: JSON.stringify(vm.tag),
                 success: function(r){
-                    if(r.code === 0){
-                        layer.alert('操作成功', function(index){
+                    if(r.code === 200){
+                        layer.alert(r.msg, function(index){
                             layer.close(index);
                             vm.reload();
                         });
