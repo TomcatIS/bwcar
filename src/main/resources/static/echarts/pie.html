@@ -10,9 +10,9 @@
     <script>
         $(function(){
             //1,初始化echarts对象
-            var myEcharts = echarts.init(document.getElementById("pie"));
+            let myEcharts = echarts.init(document.getElementById("pie"));
             //2, 指定图表的配置项和数据
-            var option = {
+            let option = {
                 title : {
                     text: '标签热度比例',
                     subtext: '真实有效',
@@ -48,17 +48,11 @@
                 url:'/sys/echarts/pie',
                 dataType:'json',
                 success:function (r) {
-                    console.log(r);
-                    //给option赋值
-                    //R.ok().put("legendData",legendData).put("seriesData",seriesData);
                     option.legend.data = r.legendData;
                     option.series[0].data = r.seriesData;
-                    // 使用刚指定的配置项和数据显示图表。
                     myEcharts.setOption(option);
                 }
             });
-            // 使用刚指定的配置项和数据显示图表。
-           // myEcharts.setOption(option);  //因为ajax是异步的
         });
     </script>
 
