@@ -2,9 +2,9 @@ package com.qf.dao;
 
 import com.qf.dto.QueryDTO;
 import com.qf.pojo.Tag;
-import com.qf.pojo.TagExample;
+
 import java.util.List;
-import org.apache.ibatis.annotations.Param;
+
 /**
  * “标签管理”持久层接口
  * */

@@ -2,13 +2,10 @@ package com.qf.dao;
 
 import com.qf.dto.QueryDTO;
 import com.qf.pojo.SysUser;
-import com.qf.pojo.SysUserExample;
+
 import java.util.List;
 import java.util.Map;
 
-import com.qf.util.R;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 /**
  * “用户管理”功能持久层接口
  * */
@@ -28,6 +25,4 @@ public interface SysUserMapper {
 
     /** “用户管理”：excel导出用户信息 */
     List<Map<String, Object>> exportUserInfo();
-
-    SysUser getUserByName(String username);
 }

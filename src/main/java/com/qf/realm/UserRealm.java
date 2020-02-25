@@ -1,6 +1,7 @@
 package com.qf.realm;
 
 import com.qf.pojo.SysUser;
+import com.qf.service.LoginService;
 import com.qf.service.MenuService;
 import com.qf.service.RoleService;
 import com.qf.service.SysUserService;
@@ -22,11 +23,11 @@ import java.util.List;
 public class UserRealm extends AuthorizingRealm {
 
     @Autowired
-    private SysUserService sysUserService;
-    @Autowired
     private MenuService menuService;
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private LoginService loginService;
 
     /**
      * 授权
@@ -53,9 +54,9 @@ public class UserRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken)authenticationToken;
         String username = usernamePasswordToken.getUsername();
-        char[] password = usernamePasswordToken.getPassword();
-        SysUser user = this.sysUserService.getUserByName(username);
-        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, user.getPassword(), this.getName());
+        String password = new String(usernamePasswordToken.getPassword());
+        SysUser user = this.loginService.getUserByName(username);
+        SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(user, password, this.getName());
         return info;
     }
 }

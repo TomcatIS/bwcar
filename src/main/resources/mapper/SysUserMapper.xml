@@ -94,14 +94,4 @@
         sys_user
   </select>
 
-  <!--根据用户名查询用户信息-->
-  <select id="getUserByName" resultMap="BaseResultMap" parameterType="String">
-    select <include refid="Base_Column_List"></include>
-    from
-    sys_user
-    where
-    username=#{username}
-
-  </select>
-
 </mapper>

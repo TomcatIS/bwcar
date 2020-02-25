@@ -24,7 +24,4 @@ public interface SysUserService {
 
     /** “用户管理”：excel形式导出用户信息 */
     Workbook exportUserInfo();
-
-    /** shiro认证用户：获取用户信息 */
-    SysUser getUserByName(String username);
 }

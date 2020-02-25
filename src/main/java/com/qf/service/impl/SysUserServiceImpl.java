@@ -145,12 +145,4 @@ public class SysUserServiceImpl implements SysUserService {
         }
         return workbook;
     }
-
-    /**
-     * shiro认证用户：获取用户信息
-     * */
-    @Override
-    public SysUser getUserByName(String username) {
-        return this.sysUserMapper.getUserByName(username);
-    }
 }

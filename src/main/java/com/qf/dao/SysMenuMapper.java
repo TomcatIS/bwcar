@@ -2,7 +2,7 @@ package com.qf.dao;
 
 import com.qf.dto.QueryDTO;
 import com.qf.pojo.SysMenu;
-import com.qf.pojo.SysMenuExample;
+
 import java.util.List;
 import java.util.Map;
 

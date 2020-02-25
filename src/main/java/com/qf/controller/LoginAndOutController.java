@@ -53,7 +53,6 @@ public class LoginAndOutController {
                 usernamePasswordToken.setRememberMe(true);
             }
         } catch (Exception e) {
-            System.out.println("用户名或密码错误");
             return R.error("用户名或密码错误");
         }
         return R.ok();
@@ -90,15 +89,9 @@ public class LoginAndOutController {
             e.printStackTrace();
         }
     }
-    // 修改密码
-    @RequestMapping("/sys/user/updatePassword")
-    @ResponseBody
-    public R updatePassword(@RequestParam String password, @RequestParam String newPassword){
-        return R.ok();
-    }
 
     /***
-     * 获取用户信息
+     * “显示登录用户”：获取用户信息
      **/
     @RequestMapping("/sys/user/info")
     @ResponseBody
